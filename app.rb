@@ -24,3 +24,6 @@ ws.on :error do |e|
   p e
   HTTParty.get kuma_status, params: { status: "down", msg: e }
 end
+
+loop do 
+end
