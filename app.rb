@@ -33,5 +33,8 @@ end
 
 loop do
   ws.send "ping"
+  if ENV["PING"] == "false"
+    HTTParty.get kuma_status_url, params: { status: "up", msg: "OK" }
+  end
   sleep 1
 end
