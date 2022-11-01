@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    dotenv (2.8.1)
     event_emitter (0.2.6)
     httparty (0.20.0)
       mime-types (~> 3.0)
@@ -19,8 +20,10 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  x86_64-linux
 
 DEPENDENCIES
+  dotenv (~> 2.8, >= 2.8.1)
   httparty (~> 0.20.0)
   puma (~> 6.0)
   websocket-client-simple (~> 0.6.0)
