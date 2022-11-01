@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-gem 'sinatra',                      github: 'sinatra/sinatra'
 gem 'websocket-client-simple',      '~> 0.6.0'
 gem 'puma',                         '~> 6.0'
 gem 'httparty',                     '~> 0.20.0'
