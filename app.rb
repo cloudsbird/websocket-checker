@@ -1,24 +1,38 @@
 require 'websocket-client-simple'
 require 'httparty'
+require 'dotenv/load'
+require 'byebug'
 
-ws = WebSocket::Client::Simple.connect 'wss://www.jomcharge.com/cable'
-kuma_status = "https://status.jomcharge.com/api/push/msOGaBNUBS"
+ws = WebSocket::Client::Simple.connect( ENV['WS_URL'] )
+kuma_status_url = ENV['KUMA_PUSH_URL']
 
 ws.on :open do
-  HTTParty.get kuma_status, params: { status: "up", msg: "OK" }
+  puts "Connected to #{ENV['WS_URL']}"
 end
+
+ws.on :message do |msg|
+  puts "Received: #{msg.data}"
+  HTTParty.get kuma_status_url, params: { status: "up", msg: "OK" }
+end
+
+# when the connection is closed reconnect 
 
 ws.on :close do |e|
-  p e
-  HTTParty.get kuma_status, params: { status: "down", msg: e }
+  puts e
+  loop do 
+    sleep 1
+    puts "Reconnecting..."
+    begin
+      ws.connect ENV['WS_URL']
+    rescue => e
+      puts e
+      sleep 10
+    end
+    break if ws.open?
+  end
 end
 
-ws.on :error do |e|
-  p e
-  HTTParty.get kuma_status, params: { status: "down", msg: e }
-end
-
-loop do 
+loop do
+  ws.send "ping"
   sleep 1
-  HTTParty.get kuma_status, params: { status: "up", msg: "OK" } if ws.open?
 end
