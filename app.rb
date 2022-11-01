@@ -1,7 +1,6 @@
 require 'websocket-client-simple'
 require 'httparty'
 require 'dotenv/load'
-require 'byebug'
 
 ws = WebSocket::Client::Simple.connect( ENV['WS_URL'] )
 kuma_status_url = ENV['KUMA_PUSH_URL']
